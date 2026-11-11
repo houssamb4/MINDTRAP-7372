@@ -1,0 +1,35 @@
+from playwright.sync_api import sync_playwright
+import json
+with sync_playwright() as p:
+    browser=p.chromium.launch(executable_path='/usr/bin/google-chrome',headless=True,args=['--autoplay-policy=no-user-gesture-required','--disable-dev-shm-usage'])
+    page=browser.new_page(viewport={'width':1440,'height':1100},device_scale_factor=1,accept_downloads=True)
+    errors=[]
+    page.on('pageerror',lambda e:errors.append(str(e)))
+    page.goto('http://localhost:4200',wait_until='networkidle')
+    page.evaluate('document.fonts.ready')
+    page.screenshot(path='/home/user/mind-trap/studio-desktop.png',full_page=True)
+    page.get_by_title('Play',exact=True).click()
+    page.wait_for_function("document.querySelector('.player-time').innerText.startsWith('00:02')",timeout=15000)
+    page.get_by_title('Pause',exact=True).click()
+    page.get_by_text('Preview reveal',exact=True).click()
+    page.screenshot(path='/home/user/mind-trap/reveal.png',full_page=True)
+    page.get_by_role('button',name='Audio',exact=True).click()
+    page.get_by_label('Narration volume').fill('90')
+    page.get_by_role('button',name='Style',exact=True).click()
+    page.get_by_label('Color theme').select_option('Cyan arcade')
+    page.get_by_label('Color theme').select_option('Electric violet')
+    for name in ['Speaking','Thinking','Surprised','Celebrate','Wrong answer','Idle']:
+        page.get_by_role('button',name=name,exact=True).click()
+    page.get_by_role('button',name='Content',exact=True).click()
+    page.get_by_label('Prompt text').fill('One of these is not like the others.')
+    page.get_by_title('Restart',exact=True).click()
+    page.get_by_role('button',name='Export video',exact=True).click()
+    with page.expect_download(timeout=100000) as dl:
+        page.locator('.modal').get_by_role('button',name='Export video',exact=True).click()
+    dl.value.save_as('/home/user/mind-trap/mind-trap-prototype.webm')
+    print('Export:',dl.value.suggested_filename)
+    page.set_viewport_size({'width':390,'height':844})
+    page.screenshot(path='/home/user/mind-trap/studio-mobile.png',full_page=True)
+    print('Overflow:',page.evaluate('document.documentElement.scrollWidth > innerWidth'))
+    print('Errors:',json.dumps(errors))
+    browser.close()

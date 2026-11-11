@@ -1,0 +1,74 @@
+/* Compact inspector keeps the show, rather than its controls, in the spotlight. */
+.inspector label {
+  margin-bottom: 12px;
+}
+.inspector label > textarea {
+  min-height: 49px;
+  height: 49px;
+  line-height: 1.65;
+}
+.inspector .field-divider {
+  margin: 12px 0;
+}
+.inspector .editing-label {
+  margin-bottom: 14px;
+}
+.inspector-content {
+  padding-top: 16px;
+  padding-bottom: 12px;
+}
+.inspector .recorded-note {
+  margin-top: 9px;
+}
+.inspector .shuffle-button {
+  margin-top: 12px;
+}
+.modal {
+  color: #ece8f5;
+  margin: 0;
+}
+.mascot-states {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 15px;
+}
+.mascot-states button {
+  font-size: 7px;
+  padding: 7px 4px;
+  background: #32233f;
+  border: 1px solid #533866;
+  border-radius: 5px;
+  color: #ac8cbe;
+}
+.mascot-states button.active {
+  background: #614284;
+  color: #ebd4ff;
+  border-color: #a579cb;
+}
+.style-mascot small {
+  display: block;
+  margin-top: 9px;
+  color: #7f628f;
+  font-size: 6px;
+  line-height: 1.8;
+}
+@media (min-width: 1151px) and (max-width: 1599px) {
+  .portrait-wrap {
+    height: 536px;
+  }
+  .canvas-space {
+    min-height: 567px;
+  }
+  .workspace-grid {
+    min-height: 705px;
+  }
+}
+@media (max-width: 650px) {
+  .inspector label > textarea {
+    height: 60px;
+  }
+  .portrait-wrap {
+    height: 450px;
+  }
+}
